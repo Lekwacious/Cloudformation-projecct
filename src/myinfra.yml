@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Eme Lekwa/ Udacity project  - This template deploys a High Availability Server
+
+Parameters:
+
+  Myproject:
+    Description: 'A new Environment'
+    Type: String
+  VpcCIDR:
+    Description: 'A new Environment'
+    Type: String
+#    default: 10.0.0.0/16
+Resources:
+
+  MyUdacityVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: '!REF VpcCIDR'
+      EnableDnsHostnames: 'true'
+      Tags:
+        - Key: name
+          Value: '!Ref Myproject'
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: '!Ref Myproject'
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: '!Ref InternetGateway'
+      VpcId: '!Ref MyUdacityVPC'
